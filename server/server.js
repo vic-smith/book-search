@@ -9,19 +9,18 @@ const db = require('./config/connection');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/book-search";
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware
 });
 
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost:27017/book-search",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
 
 // Use this to log mongo queries being executed!
 mongoose.set("debug", true);
