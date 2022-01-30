@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose")
 const {ApolloServer} = require('apollo-server-express');
 const path = require('path');
 
@@ -13,6 +14,17 @@ const server = new ApolloServer({
   resolvers,
   context: authMiddleware
 });
+
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/book-search",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+// Use this to log mongo queries being executed!
+mongoose.set("debug", true);
 
 server.applyMiddleware({ app })
 
